@@ -1,10 +1,20 @@
 from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
 
-class Article(BaseModel):
+class ArticleBase(BaseModel):
     title: str
     content: str
     published: bool = True
 
+class ArticleCreate(ArticleBase):
+    pass
 
-article = Article(title="My First Blog Post", content="This is my first blog post")
-print(article.title)
+class Article(ArticleBase):
+    id: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
